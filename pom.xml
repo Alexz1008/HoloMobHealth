@@ -12,12 +12,21 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>16</java.version>
+		<maven.compiler.source>16</maven.compiler.source>
+		<maven.compiler.target>16</maven.compiler.target>
+		<maven.compiler.release>16</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.number></project.build.number>
 		<project.fullVersion>${project.version}</project.fullVersion>
 	</properties>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven-snapshots</id>
+			<url>https://repository.apache.org/content/repositories/snapshots/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<defaultGoal>clean install</defaultGoal>
@@ -34,10 +43,21 @@
 		</resources>
 
 		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>16</source>
+					<target>16</target>
+					<release>16</release>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
+				<version>3.3.0-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -64,15 +84,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
 			</plugin>
 
 			<plugin>
@@ -236,7 +247,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.github.LOOHP</groupId>
-	    	<artifactId>Simple-YAML</artifactId>
+			<artifactId>Simple-YAML</artifactId>
 			<version>a1b8bce81f</version>
 			<scope>compile</scope>
 		</dependency>
@@ -261,13 +272,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.17-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.17-R0.1-SNAPSHOT</version>
+			<version>1.17.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -275,6 +280,27 @@
 			<artifactId>PremiumVanishAPI</artifactId>
 			<version>2.0.3</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>me.neoblade298.skillapi</groupId>
+			<artifactId>skillapi</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>C:/Users/Alex/git/SkillAPI/build/libs/SkillAPI.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
+			<scope>system</scope>
+			<systemPath>C:/Users/Alex/git/json-simple-1.1.1.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>me.neoblade298.snakeyaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>C:/Users/Alex/git/snakeyaml-1.29.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>

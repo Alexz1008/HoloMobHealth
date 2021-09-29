@@ -45,6 +45,7 @@ import com.loohp.holomobhealth.utils.PacketUtils;
 import com.loohp.holomobhealth.utils.ParsePlaceholders;
 import com.loohp.holomobhealth.utils.ShopkeepersUtils;
 import com.loohp.holomobhealth.utils.WorldGuardUtils;
+import com.sucy.skill.api.event.SkillHealEvent;
 
 import net.md_5.bungee.chat.ComponentSerializer;
 
@@ -155,7 +156,7 @@ public class DamageIndicator implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onEntityDamageEntity(EntityDamageByEntityEvent event) {
 		if (HoloMobHealth.useDamageIndicator && HoloMobHealth.damageIndicatorDamageEnabled && HoloMobHealth.damageIndicatorPlayerTriggered) {
 			if (event.getCause().equals(DamageCause.SUICIDE) || event.getFinalDamage() > Integer.MAX_VALUE) {
@@ -223,11 +224,11 @@ public class DamageIndicator implements Listener {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onRegen(EntityRegainHealthEvent event) {
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onHeal(SkillHealEvent event) {
 		if (HoloMobHealth.useDamageIndicator && HoloMobHealth.damageIndicatorRegenEnabled) {
 			
-			Entity entity = event.getEntity();			
+			Entity entity = event.getTarget();			
 			if (HoloMobHealth.disabledWorlds.contains(entity.getWorld().getName())) {
 				return;
 			}
@@ -276,7 +277,7 @@ public class DamageIndicator implements Listener {
 						maxhealth = livingentity.getMaxHealth();
 					}
 					
-					double gain = Math.min(maxhealth - health, event.getAmount());
+					double gain = event.getEffectiveHeal();
 					if (gain >= HoloMobHealth.damageIndicatorRegenMinimum) {
 						regen(livingentity, gain);
 					}
@@ -291,8 +292,8 @@ public class DamageIndicator implements Listener {
 					} else {
 						maxhealth = livingentity.getMaxHealth();
 					}
-					
-					double gain = Math.min(maxhealth - health, event.getAmount());
+
+					double gain = event.getEffectiveHeal();
 					if (gain >= HoloMobHealth.damageIndicatorRegenMinimum) {
 						regen(livingentity, gain);
 					}
