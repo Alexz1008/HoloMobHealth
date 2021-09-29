@@ -104,7 +104,7 @@ public class DamageIndicator implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (HoloMobHealth.useDamageIndicator && HoloMobHealth.damageIndicatorDamageEnabled && !HoloMobHealth.damageIndicatorPlayerTriggered) {
 			if (event.getCause().equals(DamageCause.SUICIDE) || event.getFinalDamage() > Integer.MAX_VALUE) {
@@ -156,7 +156,7 @@ public class DamageIndicator implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityDamageEntity(EntityDamageByEntityEvent event) {
 		if (HoloMobHealth.useDamageIndicator && HoloMobHealth.damageIndicatorDamageEnabled && HoloMobHealth.damageIndicatorPlayerTriggered) {
 			if (event.getCause().equals(DamageCause.SUICIDE) || event.getFinalDamage() > Integer.MAX_VALUE) {
@@ -224,11 +224,11 @@ public class DamageIndicator implements Listener {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onHeal(SkillHealEvent event) {
 		if (HoloMobHealth.useDamageIndicator && HoloMobHealth.damageIndicatorRegenEnabled) {
 			
-			Entity entity = event.getTarget();			
+			Entity entity = event.getTarget();
 			if (HoloMobHealth.disabledWorlds.contains(entity.getWorld().getName())) {
 				return;
 			}
