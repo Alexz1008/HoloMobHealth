@@ -20,13 +20,22 @@
 
 package com.loohp.holomobhealth.utils;
 
-import com.nisovin.shopkeepers.api.ShopkeepersAPI;
+import io.lumine.mythic.api.skills.SkillCaster;
+import io.lumine.mythic.bukkit.MythicBukkit;
+import io.lumine.mythic.core.mobs.ActiveMob;
 import org.bukkit.entity.Entity;
 
-public class ShopkeepersUtils {
+import java.util.Optional;
 
-    public static boolean isShopkeeper(Entity entity) {
-        return ShopkeepersAPI.getShopkeeperRegistry().isShopkeeper(entity);
+public class MythicMobs5Utils {
+
+    public static boolean isMythicMob(Entity entity) {
+        return MythicBukkit.inst().getMobManager().isActiveMob(entity.getUniqueId());
+    }
+
+    public static String getMobCustomName(Entity entity) {
+        Optional<ActiveMob> optionalActiveMob = MythicBukkit.inst().getMobManager().getActiveMob(entity.getUniqueId());
+        return optionalActiveMob.map(SkillCaster::getName).orElse(null);
     }
 
 }
