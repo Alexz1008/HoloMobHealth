@@ -1,0 +1,4 @@
+Changes made by Neo:
+1. Replaced Regen event with SkillHealEvent in DamageIndicator.java
+2. Added SkillAPI, json-simple, snakeyaml to pom.xml
+3. Removed craftbukkit from pom.xml

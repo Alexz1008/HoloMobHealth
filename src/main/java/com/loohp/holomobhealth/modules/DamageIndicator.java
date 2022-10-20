@@ -64,6 +64,8 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import com.sucy.skill.api.event.SkillHealEvent;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -252,84 +254,85 @@ public class DamageIndicator implements Listener {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onRegen(EntityRegainHealthEvent event) {
-        if (HoloMobHealth.useDamageIndicator && HoloMobHealth.damageIndicatorRegenEnabled) {
 
-            Entity entity = event.getEntity();
-            if (HoloMobHealth.disabledWorlds.contains(entity.getWorld().getName())) {
-                return;
-            }
-            if (!HoloMobHealth.showCitizens && HoloMobHealth.citizensHook) {
-                if (CitizensUtils.isNPC(entity)) {
-                    return;
-                }
-            }
-            if (!HoloMobHealth.showMythicMobs && HoloMobHealth.mythicHook) {
-                if (MythicMobsUtils.isMythicMob(entity)) {
-                    return;
-                }
-            }
-            if (!HoloMobHealth.showShopkeepers && HoloMobHealth.shopkeepersHook) {
-                if (ShopkeepersUtils.isShopkeeper(entity)) {
-                    return;
-                }
-            }
-            if (!HoloMobHealth.showMyPet && HoloMobHealth.myPetHook) {
-                if (MyPetUtils.isMyPet(entity)) {
-                    return;
-                }
-            }
-            String customName = CustomNameUtils.getMobCustomName(entity);
-            if (customName != null) {
-                for (String each : HoloMobHealth.disabledMobNamesAbsolute) {
-                    if (customName.equals(ChatColorUtils.translateAlternateColorCodes('&', each))) {
-                        return;
-                    }
-                }
-                for (String each : HoloMobHealth.disabledMobNamesContains) {
-                    if (ChatColorUtils.stripColor(customName.toLowerCase()).contains(ChatColorUtils.stripColor(ChatColorUtils.translateAlternateColorCodes('&', each).toLowerCase()))) {
-                        return;
-                    }
-                }
-            }
+	@SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onHeal(SkillHealEvent event) {
+		if (HoloMobHealth.useDamageIndicator && HoloMobHealth.damageIndicatorRegenEnabled) {
+			
+			Entity entity = event.getTarget();
+			if (HoloMobHealth.disabledWorlds.contains(entity.getWorld().getName())) {
+				return;
+			}
+			if (!HoloMobHealth.showCitizens && HoloMobHealth.citizensHook) {
+				if (CitizensUtils.isNPC(entity)) {
+					return;
+				}
+			}
+			if (!HoloMobHealth.showMythicMobs && HoloMobHealth.mythicHook) {
+				if (MythicMobsUtils.isMythicMob(entity)) {
+					return;
+				}
+			}
+			if (!HoloMobHealth.showShopkeepers && HoloMobHealth.shopkeepersHook) {
+				if (ShopkeepersUtils.isShopkeeper(entity)) {
+					return;
+				}
+			}
+			if (!HoloMobHealth.showMyPet && HoloMobHealth.myPetHook) {
+				if (MyPetUtils.isMyPet(entity)) {
+					return;
+				}
+			}
+			String customName = CustomNameUtils.getMobCustomName(entity);
+			if (customName != null) {
+				for (String each : HoloMobHealth.disabledMobNamesAbsolute) {
+					if (customName.equals(ChatColorUtils.translateAlternateColorCodes('&', each))) {
+						return;
+					}
+				}
+				for (String each : HoloMobHealth.disabledMobNamesContains) {
+					if (ChatColorUtils.stripColor(customName.toLowerCase()).contains(ChatColorUtils.stripColor(ChatColorUtils.translateAlternateColorCodes('&', each).toLowerCase()))) {
+						return;
+					}
+				}
+			}
 
-            if (HoloMobHealth.damageIndicatorPlayerTriggered) {
-                if (entity instanceof Player) {
-                    LivingEntity livingentity = (LivingEntity) entity;
-                    double health = livingentity.getHealth();
-                    double maxHealth;
-                    if (!HoloMobHealth.version.isLegacy()) {
-                        maxHealth = livingentity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-                    } else {
-                        maxHealth = livingentity.getMaxHealth();
-                    }
+			if (HoloMobHealth.damageIndicatorPlayerTriggered) {
+				if (entity instanceof Player) {
+					LivingEntity livingentity = (LivingEntity) entity;
+					double health = livingentity.getHealth();
+					double maxhealth = 0.0;
+					if (!HoloMobHealth.version.isLegacy()) {
+						maxhealth = livingentity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+					} else {
+						maxhealth = livingentity.getMaxHealth();
+					}
+					
+					double gain = event.getEffectiveHeal();
+					if (gain >= HoloMobHealth.damageIndicatorRegenMinimum) {
+						regen(livingentity, gain);
+					}
+				}
+			} else {
+				if (entity instanceof LivingEntity && (EntityTypeUtils.getMobsTypesSet().contains(entity.getType()) || entity.getType().equals(EntityType.PLAYER))) {
+					LivingEntity livingentity = (LivingEntity) entity;
+					double health = livingentity.getHealth();
+					double maxhealth = 0.0;
+					if (!HoloMobHealth.version.isLegacy()) {
+						maxhealth = livingentity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+					} else {
+						maxhealth = livingentity.getMaxHealth();
+					}
 
-                    double gain = Math.min(maxHealth - health, event.getAmount());
-                    if (gain >= HoloMobHealth.damageIndicatorRegenMinimum) {
-                        regen(livingentity, gain);
-                    }
-                }
-            } else {
-                if (entity instanceof LivingEntity && (EntityTypeUtils.getMobsTypesSet().contains(EntityTypeUtils.getEntityType(entity)) || EntityTypeUtils.getEntityType(entity).equals(EntityType.PLAYER))) {
-                    LivingEntity livingentity = (LivingEntity) entity;
-                    double health = livingentity.getHealth();
-                    double maxHealth;
-                    if (!HoloMobHealth.version.isLegacy()) {
-                        maxHealth = livingentity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-                    } else {
-                        maxHealth = livingentity.getMaxHealth();
-                    }
-
-                    double gain = Math.min(maxHealth - health, event.getAmount());
-                    if (gain >= HoloMobHealth.damageIndicatorRegenMinimum) {
-                        regen(livingentity, gain);
-                    }
-                }
-            }
-        }
-    }
+					double gain = event.getEffectiveHeal();
+					if (gain >= HoloMobHealth.damageIndicatorRegenMinimum) {
+						regen(livingentity, gain);
+					}
+				}
+			}
+		}
+	}
 
     public void damage(LivingEntity entity, double damage) {
         Location location = entity.getLocation();

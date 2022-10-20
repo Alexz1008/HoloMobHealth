@@ -337,15 +337,30 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>1.19.1-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
+			<groupId>me.neoblade298.skillapi</groupId>
+			<artifactId>skillapi</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>C:/Users/Alex/git/SkillAPI/build/libs/SkillAPI.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.19.1-R0.1-SNAPSHOT</version>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
+			<scope>system</scope>
+			<systemPath>C:/Users/Alex/git/json-simple-1.1.1.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>me.neoblade298.snakeyaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>C:/Users/Alex/git/snakeyaml-1.29.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-api</artifactId>
+			<version>1.19.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
