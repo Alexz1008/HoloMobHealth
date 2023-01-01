@@ -254,7 +254,6 @@ public class DamageIndicator implements Listener {
         }
     }
 
-
 	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onHeal(SkillHealEvent event) {
