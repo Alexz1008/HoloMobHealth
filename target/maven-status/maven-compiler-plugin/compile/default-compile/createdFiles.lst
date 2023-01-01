@@ -52,6 +52,7 @@ com\loohp\holomobhealth\modules\NameTagDisplay.class
 com\loohp\holomobhealth\utils\LanguageUtils$1.class
 com\loohp\holomobhealth\holders\MultilineStands.class
 com\loohp\holomobhealth\utils\TropicalFishUtils$TropicalFishPattern.class
+com\loohp\holomobhealth\utils\DataWatcherUtils.class
 com\loohp\holomobhealth\modules\ArmorstandDisplay$2.class
 com\loohp\holomobhealth\utils\LanguageUtils.class
 com\loohp\holomobhealth\utils\MCVersion.class
