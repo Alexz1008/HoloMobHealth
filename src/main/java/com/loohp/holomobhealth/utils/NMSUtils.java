@@ -97,6 +97,12 @@ public class NMSUtils {
                     throw new NoSuchMethodException("Incorrect return type");
                 }
                 return method;
+            }, () -> {
+                Method method = nmsEntityClass.getMethod("cs");
+                if (!method.getReturnType().equals(UUID.class)) {
+                    throw new NoSuchMethodException("Incorrect return type");
+                }
+                return method;
             });
             nmsAxisAlignedBBClass = getNMSClass("net.minecraft.server.%s.AxisAlignedBB", "net.minecraft.world.phys.AxisAlignedBB");
             nmsEntityGetBoundingBox = reflectiveLookup(Method.class, () -> {
@@ -125,6 +131,12 @@ public class NMSUtils {
                     throw new NoSuchMethodException("Incorrect return type");
                 }
                 return method;
+            }, () -> {
+                Method method = nmsEntityClass.getMethod("cD");
+                if (!method.getReturnType().equals(nmsAxisAlignedBBClass)) {
+                    throw new NoSuchMethodException("Incorrect return type");
+                }
+                return method;
             });
             nmsEntityGetHandle = craftEntityClass.getMethod("getHandle");
             nmsAxisAlignedBBFields = Arrays.stream(nmsAxisAlignedBBClass.getFields()).filter(each -> each.getType().equals(double.class) && !Modifier.isStatic(each.getModifiers())).toArray(Field[]::new);
@@ -140,7 +152,7 @@ public class NMSUtils {
                         nmsWorldEntityManagerField = nmsWorldServerClass.getDeclaredField("P");
                     } else if (HoloMobHealth.version.equals(MCVersion.V1_18_2)) {
                         nmsWorldEntityManagerField = nmsWorldServerClass.getDeclaredField("O");
-                    } else if (HoloMobHealth.version.equals(MCVersion.V1_19)) {
+                    } else if (HoloMobHealth.version.isNewerOrEqualTo(MCVersion.V1_19)) {
                         nmsWorldEntityManagerField = nmsWorldServerClass.getDeclaredField("P");
                     }
                     nmsEntityManagerGetEntityGetterMethod = nmsWorldEntityManagerField.getType().getMethod("d");
